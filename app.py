@@ -1,6 +1,7 @@
 from dotenv import load_dotenv
 import streamlit as st
 from PyPDF2 import PdfReader
+import docx2txt
 from langchain.chat_models import ChatOpenAI
 from langchain.schema import HumanMessage
 from langchain import PromptTemplate
@@ -98,16 +99,22 @@ def main():
 
     status = st.empty()
 
-    file = st.file_uploader("PDF, Word Doc", type=["pdf"])
+    file = st.file_uploader("PDF, Word Doc", type=["pdf", "docx"])
 
     details = st.empty()
 
     if file is not None:
+        print(file)
         with st.spinner("Scanning..."):
-            pdf_reader = PdfReader(file)
-            text = ""
-            for page in pdf_reader.pages:
-                text += page.extract_text()
+            if file.type == "application/pdf":
+                pdf_reader = PdfReader(file)
+                text = ""
+                for page in pdf_reader.pages:
+                    text += page.extract_text()
+
+            if file.type == "application/vnd.openxmlformats-officedocument.wordprocessingml.document":
+                text = ""
+                text += docx2txt.process(file)
 
             prompt = PromptTemplate.from_template(template)
             content = prompt.format(resume=text)
