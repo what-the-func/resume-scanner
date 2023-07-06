@@ -103,19 +103,21 @@ def main():
     details = st.empty()
 
     if file is not None:
-        pdf_reader = PdfReader(file)
-        text = ""
-        for page in pdf_reader.pages:
-            text += page.extract_text()
+        with st.spinner("Scanning..."):
+            pdf_reader = PdfReader(file)
+            text = ""
+            for page in pdf_reader.pages:
+                text += page.extract_text()
 
-        prompt = PromptTemplate.from_template(template)
-        content = prompt.format(resume=text)
+            prompt = PromptTemplate.from_template(template)
+            content = prompt.format(resume=text)
 
-        response = llm(
-            [HumanMessage(content=content)], functions=function_descriptions)
+            response = llm(
+                [HumanMessage(content=content)],
+                functions=function_descriptions)
 
-        data = json.loads(
-            response.additional_kwargs["function_call"]["arguments"])
+            data = json.loads(
+                response.additional_kwargs["function_call"]["arguments"])
 
         with details.container():
             st.write("## Details")
@@ -140,7 +142,7 @@ def main():
             for skill in data['skills']:
                 st.write(f" - {skill}")
 
-        status = status.success("File Uploaded Successfully")
+        status = status.success("Resume Scanned Successfully")
 
 
 if __name__ == '__main__':
