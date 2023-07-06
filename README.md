@@ -1,4 +1,4 @@
-# Scan Resume
+# Resume Scanner
 
 Easily extract important information from a resume using the power of OpeanAI functions to structure responses.
 
