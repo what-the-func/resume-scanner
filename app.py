@@ -91,7 +91,7 @@ Resume: {resume}
 def main():
     load_dotenv()
 
-    llm = ChatOpenAI(model="gpt-3.5-turbo-0613")
+    llm = ChatOpenAI(model="gpt-4-0613")
 
     st.write("# Resume Scanner")
 
@@ -104,22 +104,21 @@ def main():
     details = st.empty()
 
     if file is not None:
-        print(file)
         with st.spinner("Scanning..."):
+            text = ""
             if file.type == "application/pdf":
                 pdf_reader = PdfReader(file)
-                text = ""
                 for page in pdf_reader.pages:
                     text += page.extract_text()
 
+            # @ImportWarning
             if file.type == "application/vnd.openxmlformats-officedocument.wordprocessingml.document":
-                text = ""
                 text += docx2txt.process(file)
 
             prompt = PromptTemplate.from_template(template)
             content = prompt.format(resume=text)
 
-            response = llm(
+            response = llm.predict_messages(
                 [HumanMessage(content=content)],
                 functions=function_descriptions)
 
