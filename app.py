@@ -111,7 +111,6 @@ def main():
                 for page in pdf_reader.pages:
                     text += page.extract_text()
 
-            # @ImportWarning
             if file.type == "application/vnd.openxmlformats-officedocument.wordprocessingml.document":
                 text += docx2txt.process(file)
 

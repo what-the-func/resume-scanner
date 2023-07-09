@@ -38,6 +38,12 @@ cd resume-scanner
 pip install -r requirements.txt
 ```
 
+Copy the `.env.example` file to `.env` and fill in the required environment variables:
+
+```bash
+cp .env.example .env
+```
+
 Finally, run the application:
 
 ```bash
