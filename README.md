@@ -16,6 +16,7 @@ Upload any resume in PDF format and it will extract the most important informati
 
 The application depends on several Python libraries, including:
 
+- `openai` for using the OpenAI API.
 - `python-dotenv` for loading environment variables.
 - `streamlit` for creating the application interface.
 - `PyPDF2` for reading PDF files.
